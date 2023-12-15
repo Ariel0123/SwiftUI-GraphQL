@@ -31,7 +31,7 @@ enum ErrorNetwork: Error{
     }
 }
 
-protocol APICallerDelegate{
+protocol APICallerProtocol{
     func setupApolloClientAuth()
     func register(input: InputUserRegister, completion: @escaping (Result<User, ErrorNetwork>) -> ())
     func getAllTasks(completion: @escaping (Result<[Task], ErrorNetwork>) -> ())
@@ -43,7 +43,7 @@ protocol APICallerDelegate{
     
 }
 
-class APICaller: APICallerDelegate{
+class APICaller: APICallerProtocol{
     
     static let shared = APICaller()
     
@@ -91,7 +91,7 @@ class APICaller: APICallerDelegate{
             case .success(let user):
                 
                 if user.errors != nil{
-                    let errorRes = Utils.shared.processError(error: user.errors!).message
+                    let errorRes = Utils.processError(error: user.errors!).message
                     completion(.failure(.serverError(msg: errorRes)))
                     return
                 }
@@ -102,7 +102,7 @@ class APICaller: APICallerDelegate{
                     return
                 }
                 
-                let result = Utils.shared.processDataUserRegister(data: data)
+                let result = Utils.processDataUserRegister(data: data)
                 let dataToken = Data(result.token.utf8)
                 SecurityManager.shared.save(dataToken, service: .tokenService, account: .appService)
                 self.setupApolloClientAuth()
@@ -121,7 +121,7 @@ class APICaller: APICallerDelegate{
             case .success(let user):
                 
                 if user.errors != nil{
-                    let errorRes = Utils.shared.processError(error: user.errors!).message
+                    let errorRes = Utils.processError(error: user.errors!).message
                     completion(.failure(.serverError(msg: errorRes.description)))
                     return
                 }
@@ -132,7 +132,7 @@ class APICaller: APICallerDelegate{
                     return
                 }
                 
-                let result = Utils.shared.processDataUserLogin(data: data)
+                let result = Utils.processDataUserLogin(data: data)
                 let dataToken = Data(result.token.utf8)
                 SecurityManager.shared.save(dataToken, service: .tokenService, account: .appService)
                 self.setupApolloClientAuth()
@@ -159,7 +159,7 @@ class APICaller: APICallerDelegate{
             case .success(let tasks):
                 
                 if tasks.errors != nil{
-                    let errorRes = Utils.shared.processError(error: tasks.errors!).message
+                    let errorRes = Utils.processError(error: tasks.errors!).message
                     completion(.failure(.serverError(msg: errorRes)))
                     return
                 }
@@ -170,7 +170,7 @@ class APICaller: APICallerDelegate{
                     return
                 }
                 
-                guard let result = Utils.shared.processData(data: data) else{
+                guard let result = Utils.processData(data: data) else{
                     completion(.failure(.badDecoding))
                     return
                 }

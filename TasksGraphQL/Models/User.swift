@@ -30,7 +30,7 @@ struct InputUserRegister{
             return ResultInput(success: false, messageError: "Name needs at least 3 characters")
         }
         
-        if !Utils.shared.isValid(email: email){
+        if !Utils.isValid(email: email){
             return ResultInput(success: false, messageError: "Invalid email")
         }
         
@@ -56,7 +56,7 @@ struct InputUserLogin{
     
     func validate() -> ResultInput{
         
-        if !Utils.shared.isValid(email: email){
+        if !Utils.isValid(email: email){
             return ResultInput(success: false, messageError: "Invalid email")
         }
         

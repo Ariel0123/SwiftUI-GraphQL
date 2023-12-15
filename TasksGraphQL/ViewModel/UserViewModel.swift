@@ -14,9 +14,9 @@ class UserViewModel: ObservableObject{
     @Published var isAuth: Bool = false
     @Published var errorMessage: ErrorMessageServer?
     
-    private var apiCaller: APICallerDelegate
+    private var apiCaller: APICallerProtocol
     
-    init(apiCaller: APICallerDelegate = APICaller.shared){
+    init(apiCaller: APICallerProtocol = APICaller.shared){
         self.apiCaller = apiCaller
     }
     

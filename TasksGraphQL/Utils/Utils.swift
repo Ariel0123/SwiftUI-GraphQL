@@ -9,31 +9,29 @@ import Foundation
 import Apollo
 
 class Utils{
-    
-    static let shared = Utils()
-    
-    func processData(data: TaskListQuery.Data) -> [Task]?{
+        
+    static func processData(data: TaskListQuery.Data) -> [Task]?{
         guard let list = data.getAllTasks else{ return nil }
         let results = list.map({Task($0)})
         return results
     }
     
-    func processDataUserRegister(data: RegisterUserMutation.Data) -> AuthResponse{
+    static func processDataUserRegister(data: RegisterUserMutation.Data) -> AuthResponse{
         let user = data.registerUser
         return AuthResponse(token: user.token, user: User(id: user.user.id, name: user.user.name))
     }
     
-    func processDataUserLogin(data: LoginMutation.Data) -> AuthResponse{
+    static func processDataUserLogin(data: LoginMutation.Data) -> AuthResponse{
         let user = data.login
         return AuthResponse(token: user.token, user: User(id: user.user.id, name: user.user.name))
     }
     
-    func processError(error: [GraphQLError]) -> MessageError{
+    static func processError(error: [GraphQLError]) -> MessageError{
         let message = error.first
         return MessageError(message: message!.message!)
     }
     
-    func isValid(email: String) -> Bool
+    static func isValid(email: String) -> Bool
     {
         let emailRegEx = "[A-Z0-9a-z.-_]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,3}"
         let regex = try! NSRegularExpression(pattern: emailRegEx)

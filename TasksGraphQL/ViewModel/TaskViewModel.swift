@@ -13,9 +13,9 @@ class TaskViewModel: ObservableObject{
     
     @Published public var listTasks = [Task]()
     
-    private var apiCaller: APICallerDelegate
+    private var apiCaller: APICallerProtocol
     
-    init(apiCaller: APICallerDelegate = APICaller.shared){
+    init(apiCaller: APICallerProtocol = APICaller.shared){
         self.apiCaller = apiCaller
     }
     
